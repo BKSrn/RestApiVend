@@ -1,6 +1,7 @@
 package com.example.VEND.service;
 
 import com.example.VEND.dto.CarroDTO;
+import com.example.VEND.dto.CarroRequestDTO;
 import com.example.VEND.model.Carro;
 import com.example.VEND.repository.RepositorioCarro;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,16 @@ public class CarroService {
 
     public List<CarroDTO> buscarPorMarcaModelo(String marca, String modelo) {
         return converteToDTOList(repositorioCarro.findByMarcaAndModeloContainsOrderByPrecoAsc(marca, modelo));
+    }
+
+    public CarroDTO insertCarro(CarroRequestDTO carroRequestDTO) {
+        Carro carro = new Carro();
+        carro.setModelo(carroRequestDTO.modelo());
+        carro.setMarca(carroRequestDTO.marca());
+        carro.setAno(carroRequestDTO.ano());
+        carro.setCarroceria(carroRequestDTO.carroceria());
+        carro.setPreco(carroRequestDTO.preco());
+
+        return converteToDTO(repositorioCarro.save(carro));
     }
 }

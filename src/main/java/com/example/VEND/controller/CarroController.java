@@ -1,6 +1,7 @@
 package com.example.VEND.controller;
 
 import com.example.VEND.dto.CarroDTO;
+import com.example.VEND.dto.CarroRequestDTO;
 import com.example.VEND.service.CarroService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,6 +80,11 @@ public class CarroController {
             return ResponseEntity.ok(carro);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping
+    public CarroDTO insertCarro(@RequestBody @Valid CarroRequestDTO carroRequestDTO) {
+        return carroService.insertCarro(carroRequestDTO);
     }
 
     @Operation(
