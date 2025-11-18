@@ -1,10 +1,8 @@
 package com.example.VEND.service;
 
-import com.example.VEND.dto.CarroCadastrarDTO;
 import com.example.VEND.dto.CarroDTO;
 import com.example.VEND.model.Carro;
 import com.example.VEND.repository.RepositorioCarro;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +32,7 @@ public class CarroService {
         if (carro.isPresent()){
             return converteToDTO(carro.get());
         }else {
-            throw new EntityNotFoundException("Carro nao encontrado");
+            return null;
         }
     }
 
@@ -57,15 +55,5 @@ public class CarroService {
 
     public List<CarroDTO> buscarPorMarcaModelo(String marca, String modelo) {
         return converteToDTOList(repositorioCarro.findByMarcaAndModeloContainsOrderByPrecoAsc(marca, modelo));
-    }
-
-    public String cadastrar(CarroCadastrarDTO dto) {
-        try {
-            Carro carroSalvo = repositorioCarro.save(new Carro(dto));
-            return "Carro do ID: " + carroSalvo.getId() + " salvo com sucesso";
-        }catch (IllegalArgumentException e){
-            throw new IllegalArgumentException("Erro ao salvar o carro no banco de dados");
-        }
-
     }
 }
