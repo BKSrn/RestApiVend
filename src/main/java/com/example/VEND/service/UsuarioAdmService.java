@@ -1,6 +1,6 @@
 package com.example.VEND.service;
 
-import com.example.VEND.dto.UsuarioAdmDTO;
+import com.example.VEND.dto.UsuarioAdmResponseDTO;
 import com.example.VEND.dto.UsuarioCadastrarDTO;
 import com.example.VEND.model.UsuarioAdm;
 import com.example.VEND.repository.RepositorioUsuarioAdm;
@@ -25,11 +25,11 @@ public class UsuarioAdmService {
         return null;
     }
 
-    public List<UsuarioAdmDTO> listarTodos() {
+    public List<UsuarioAdmResponseDTO> listarTodos() {
         return converteToDTOList(repositorioUsuarioAdm.findAll());
     }
 
-    public UsuarioAdmDTO buscarPorId(Long id){
+    public UsuarioAdmResponseDTO buscarPorId(Long id){
         Optional<UsuarioAdm> usuario = repositorioUsuarioAdm.findById(id);
 
         if (usuario.isPresent()){
@@ -47,13 +47,13 @@ public class UsuarioAdmService {
 
     }
 
-    private UsuarioAdmDTO converteToDTO(UsuarioAdm usuarioAdm){
-        return new UsuarioAdmDTO(usuarioAdm.getId(), usuarioAdm.getEmail(), usuarioAdm.getSenha());
+    private UsuarioAdmResponseDTO converteToDTO(UsuarioAdm usuarioAdm){
+        return new UsuarioAdmResponseDTO(usuarioAdm.getId(), usuarioAdm.getEmail(), usuarioAdm.getSenha());
     }
 
-    private List<UsuarioAdmDTO> converteToDTOList(List<UsuarioAdm> usuarios){
+    private List<UsuarioAdmResponseDTO> converteToDTOList(List<UsuarioAdm> usuarios){
         return usuarios.stream()
-                .map(u -> new UsuarioAdmDTO(u.getId(), u.getEmail(), u.getSenha()))
+                .map(u -> new UsuarioAdmResponseDTO(u.getId(), u.getEmail(), u.getSenha()))
                 .collect(Collectors.toList());
     }
 

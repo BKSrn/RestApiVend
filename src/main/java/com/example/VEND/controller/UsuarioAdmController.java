@@ -1,6 +1,6 @@
 package com.example.VEND.controller;
 
-import com.example.VEND.dto.UsuarioAdmDTO;
+import com.example.VEND.dto.UsuarioAdmResponseDTO;
 import com.example.VEND.dto.UsuarioCadastrarDTO;
 import com.example.VEND.service.UsuarioAdmService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,7 +46,7 @@ public class UsuarioAdmController {
                     description = "Lista de usuários retornada com sucesso",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = UsuarioAdmDTO.class)
+                            schema = @Schema(implementation = UsuarioAdmResponseDTO.class)
                     )
             ),
             @ApiResponse(
@@ -56,8 +56,8 @@ public class UsuarioAdmController {
             )
     })
     @GetMapping
-    public ResponseEntity<List<UsuarioAdmDTO>> listarUsuarios() {
-        List<UsuarioAdmDTO> usuarios = usuarioService.listarTodos();
+    public ResponseEntity<List<UsuarioAdmResponseDTO>> listarUsuarios() {
+        List<UsuarioAdmResponseDTO> usuarios = usuarioService.listarTodos();
         return ResponseEntity.ok(usuarios);
     }
 
@@ -71,7 +71,7 @@ public class UsuarioAdmController {
                     description = "Usuário encontrado com sucesso",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = UsuarioAdmDTO.class)
+                            schema = @Schema(implementation = UsuarioAdmResponseDTO.class)
                     )
             ),
             @ApiResponse(
@@ -81,10 +81,10 @@ public class UsuarioAdmController {
             )
     })
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioAdmDTO> buscarPorId(
+    public ResponseEntity<UsuarioAdmResponseDTO> buscarPorId(
             @Parameter(description = "ID do usuário a ser buscado", required = true, example = "1")
             @PathVariable Long id) {
-        UsuarioAdmDTO usuario = usuarioService.buscarPorId(id);
+        UsuarioAdmResponseDTO usuario = usuarioService.buscarPorId(id);
 
         if (usuario != null) {
             return ResponseEntity.ok(usuario);

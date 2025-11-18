@@ -6,7 +6,7 @@ import com.example.VEND.model.UsuarioCliente;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Objeto de transferência de dados para informações de carros")
-public record CarroDTO(
+public record CarroResponseDTO(
         @Schema(description = "ID único do carro", example = "1")
         Long id,
 

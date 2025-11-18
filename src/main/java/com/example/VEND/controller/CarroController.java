@@ -1,7 +1,7 @@
 package com.example.VEND.controller;
 
 import com.example.VEND.dto.CarroCadastrarDTO;
-import com.example.VEND.dto.CarroDTO;
+import com.example.VEND.dto.CarroResponseDTO;
 import com.example.VEND.service.CarroService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -45,7 +45,7 @@ public class CarroController {
                     description = "Lista de carros retornada com sucesso",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = CarroDTO.class)
+                            schema = @Schema(implementation = CarroResponseDTO.class)
                     )
             ),
             @ApiResponse(
@@ -55,8 +55,8 @@ public class CarroController {
             )
     })
     @GetMapping
-    public ResponseEntity<List<CarroDTO>> listarCarros() {
-        List<CarroDTO> carros = carroService.listarTodos();
+    public ResponseEntity<List<CarroResponseDTO>> listarCarros() {
+        List<CarroResponseDTO> carros = carroService.listarTodos();
         return ResponseEntity.ok(carros);
     }
 
@@ -70,7 +70,7 @@ public class CarroController {
                     description = "Carro encontrado com sucesso",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = CarroDTO.class)
+                            schema = @Schema(implementation = CarroResponseDTO.class)
                     )
             ),
             @ApiResponse(
@@ -80,10 +80,10 @@ public class CarroController {
             )
     })
     @GetMapping("/{id}")
-    public ResponseEntity<CarroDTO> buscarPorId(
+    public ResponseEntity<CarroResponseDTO> buscarPorId(
             @Parameter(description = "ID do carro a ser buscado", required = true, example = "1")
             @PathVariable Long id) {
-        CarroDTO carro = carroService.buscarPorId(id);
+        CarroResponseDTO carro = carroService.buscarPorId(id);
 
         if (carro != null) {
             return ResponseEntity.ok(carro);
@@ -101,7 +101,7 @@ public class CarroController {
                     description = "Lista de carros retornada com sucesso",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = CarroDTO.class)
+                            schema = @Schema(implementation = CarroResponseDTO.class)
                     )
             ),
             @ApiResponse(
@@ -111,10 +111,10 @@ public class CarroController {
             )
     })
     @GetMapping("/marca/{marca}")
-    public ResponseEntity<List<CarroDTO>> buscarCarrosPorMarca(
+    public ResponseEntity<List<CarroResponseDTO>> buscarCarrosPorMarca(
             @Parameter(description = "Marca do carro (ex: fiat, volkswagen, chevrolet)", required = true, example = "fiat")
             @PathVariable String marca) {
-        List<CarroDTO> carros = carroService.buscarPorMarca(marca);
+        List<CarroResponseDTO> carros = carroService.buscarPorMarca(marca);
 
         if (carros.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -132,7 +132,7 @@ public class CarroController {
                     description = "Lista de carros retornada com sucesso",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = CarroDTO.class)
+                            schema = @Schema(implementation = CarroResponseDTO.class)
                     )
             ),
             @ApiResponse(
@@ -142,12 +142,12 @@ public class CarroController {
             )
     })
     @GetMapping("/marca/{marca}/modelo/{modelo}")
-    public ResponseEntity<List<CarroDTO>> buscarCarrosPorMarcaModelo(
+    public ResponseEntity<List<CarroResponseDTO>> buscarCarrosPorMarcaModelo(
             @Parameter(description = "Marca do carro", required = true, example = "fiat")
             @PathVariable String marca,
             @Parameter(description = "Modelo do carro", required = true, example = "uno")
             @PathVariable String modelo) {
-        List<CarroDTO> carros = carroService.buscarPorMarcaModelo(marca, modelo);
+        List<CarroResponseDTO> carros = carroService.buscarPorMarcaModelo(marca, modelo);
 
         if (carros.isEmpty()) {
             return ResponseEntity.notFound().build();
