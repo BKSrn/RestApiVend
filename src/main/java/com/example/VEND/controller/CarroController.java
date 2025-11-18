@@ -1,5 +1,6 @@
 package com.example.VEND.controller;
 
+import com.example.VEND.dto.CarroCadastrarDTO;
 import com.example.VEND.dto.CarroDTO;
 import com.example.VEND.service.CarroService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +24,16 @@ public class CarroController {
 
     @Autowired
     private CarroService carroService;
+
+    @PostMapping
+    public ResponseEntity<String> cadastarCarro(@RequestBody CarroCadastrarDTO dto){
+        try {
+            carroService.cadastrar(dto);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }catch (IllegalArgumentException e ){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 
     @Operation(
             summary = "Listar todos os carros",

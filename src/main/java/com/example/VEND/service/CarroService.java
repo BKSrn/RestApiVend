@@ -1,5 +1,6 @@
 package com.example.VEND.service;
 
+import com.example.VEND.dto.CarroCadastrarDTO;
 import com.example.VEND.dto.CarroDTO;
 import com.example.VEND.model.Carro;
 import com.example.VEND.repository.RepositorioCarro;
@@ -55,5 +56,14 @@ public class CarroService {
 
     public List<CarroDTO> buscarPorMarcaModelo(String marca, String modelo) {
         return converteToDTOList(repositorioCarro.findByMarcaAndModeloContainsOrderByPrecoAsc(marca, modelo));
+    }
+
+    public void cadastrar(CarroCadastrarDTO dto) {
+        if (dto != null){
+            repositorioCarro.save(new Carro(dto));
+        }else {
+            throw new IllegalArgumentException("Preencha todas as informações necessarias");
+        }
+
     }
 }
