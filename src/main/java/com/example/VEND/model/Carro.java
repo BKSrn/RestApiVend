@@ -1,5 +1,7 @@
 package com.example.VEND.model;
 
+import com.example.VEND.dto.CarroCadastrarDTO;
+import com.example.VEND.model.enums.Carroceria;
 import jakarta.persistence.*;
 
 
@@ -37,6 +39,15 @@ public class Carro {
         this.ano = ano;
         this.preco = preco;
         this.marca = marca;
+    }
+
+    public Carro(CarroCadastrarDTO dto) {
+        this.carroceria = Carroceria.fromString(dto.carroceria());
+        this.imagem = dto.imagem();
+        this.modelo = dto.modelo();
+        this.ano = dto.ano();
+        this.preco = dto.preco();
+        this.marca = dto.marca();
     }
 
     public byte[] getImagem() {

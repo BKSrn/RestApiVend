@@ -1,5 +1,6 @@
 package com.example.VEND.model;
 
+import com.example.VEND.dto.UsuarioCadastrarDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,6 +20,11 @@ public class UsuarioAdm {
     public UsuarioAdm(String email, String senha) {
         this.email = email;
         this.senha = senha;
+    }
+
+    public UsuarioAdm(UsuarioCadastrarDTO dto) {
+        this.email = dto.email();
+        this.senha = dto.senha();
     }
 
     public String getSenha() {

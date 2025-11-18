@@ -1,6 +1,7 @@
 package com.example.VEND.service;
 
 import com.example.VEND.dto.UsuarioAdmDTO;
+import com.example.VEND.dto.UsuarioCadastrarDTO;
 import com.example.VEND.model.UsuarioAdm;
 import com.example.VEND.repository.RepositorioUsuarioAdm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,15 @@ public class UsuarioAdmService {
         return null;
     }
 
+    public void cadastrarUsuario(UsuarioCadastrarDTO dto) {
+        if (dto != null){
+            repositorioUsuarioAdm.save(new UsuarioAdm(dto));
+        }else {
+            throw new RuntimeException("Informe todas as informações corretamentes");
+        }
+
+    }
+
     private UsuarioAdmDTO converteToDTO(UsuarioAdm usuarioAdm){
         return new UsuarioAdmDTO(usuarioAdm.getId(), usuarioAdm.getEmail(), usuarioAdm.getSenha());
     }
@@ -46,4 +56,6 @@ public class UsuarioAdmService {
                 .map(u -> new UsuarioAdmDTO(u.getId(), u.getEmail(), u.getSenha()))
                 .collect(Collectors.toList());
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.VEND.controller;
 
 import com.example.VEND.dto.UsuarioAdmDTO;
+import com.example.VEND.dto.UsuarioCadastrarDTO;
 import com.example.VEND.service.UsuarioAdmService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,6 +24,17 @@ public class UsuarioAdmController {
 
     @Autowired
     private UsuarioAdmService usuarioService;
+
+    @PostMapping
+    public void cadastrarUsuario(@RequestBody UsuarioCadastrarDTO dto){
+        try {
+            usuarioService.cadastrarUsuario(dto);
+            ResponseEntity.ok();
+        }catch (RuntimeException e){
+            ResponseEntity.badRequest();
+        }
+
+    }
 
     @Operation(
             summary = "Listar todos os usuários",

@@ -1,7 +1,7 @@
 
 package com.example.VEND.dto;
 
-import com.example.VEND.model.Carroceria;
+import com.example.VEND.model.enums.Carroceria;
 import com.example.VEND.model.UsuarioCliente;
 import io.swagger.v3.oas.annotations.media.Schema;
 

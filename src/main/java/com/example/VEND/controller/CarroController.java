@@ -1,5 +1,6 @@
 package com.example.VEND.controller;
 
+import com.example.VEND.dto.CarroCadastrarDTO;
 import com.example.VEND.dto.CarroDTO;
 import com.example.VEND.service.CarroService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,18 @@ public class CarroController {
 
     @Autowired
     private CarroService carroService;
+
+    @PostMapping
+    public ResponseEntity<String> cadastrarCarro(@RequestBody CarroCadastrarDTO dto){
+        try {
+            String mensagem = carroService.cadastrar(dto);
+            return ResponseEntity.status(HttpStatus.OK).body(mensagem);
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+
+    }
 
     @Operation(
             summary = "Listar todos os carros",
@@ -72,12 +86,14 @@ public class CarroController {
     public ResponseEntity<CarroDTO> buscarPorId(
             @Parameter(description = "ID do carro a ser buscado", required = true, example = "1")
             @PathVariable Long id) {
-        CarroDTO carro = carroService.buscarPorId(id);
 
-        if (carro != null) {
+        try {
+            CarroDTO carro = carroService.buscarPorId(id);
             return ResponseEntity.ok(carro);
+        }catch (EntityNotFoundException e ){
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+
     }
 
     @Operation(
