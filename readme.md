@@ -1,9 +1,10 @@
 # 🚗 VEND API - Sistema de Vendas de Carros
 
-API REST desenvolvida com Spring Boot para gerenciamento de carros e usuários do sistema VEND.
+API REST desenvolvida com Spring Boot para gerenciamento de carros e usuários do sistema VEND, com integração à API FIPE para consulta de preços de veículos.
 
 ## 📋 Índice
 
+- [Sobre o Projeto](#sobre-o-projeto)
 - [Tecnologias](#tecnologias)
 - [Pré-requisitos](#pré-requisitos)
 - [Instalação](#instalação)
@@ -12,25 +13,41 @@ API REST desenvolvida com Spring Boot para gerenciamento de carros e usuários d
 - [Documentação da API](#documentação-da-api)
 - [Endpoints](#endpoints)
 - [Estrutura do Projeto](#estrutura-do-projeto)
+- [Modelos de Dados](#modelos-de-dados)
+
+## 📖 Sobre o Projeto
+
+O VEND é um sistema completo para gerenciamento de vendas de carros que oferece:
+
+- ✅ Cadastro e consulta de veículos
+- ✅ Gerenciamento de usuários (administradores e clientes)
+- ✅ Busca avançada por marca, modelo e ano
+- ✅ Integração com API FIPE para preços de mercado
+- ✅ Documentação interativa com Swagger/OpenAPI
+- ✅ Suporte a diferentes tipos de carroceria
+- ✅ Sistema de interesses de clientes
 
 ## 🛠️ Tecnologias
 
 - **Java 21**
 - **Spring Boot 3.5.6**
-- **Spring Data JPA**
-- **PostgreSQL**
-- **Springdoc OpenAPI 2.6.0** (Swagger)
-- **Google GenAI 1.3.0**
-- **Maven**
+  - Spring Web
+  - Spring Data JPA
+  - Spring Boot Tomcat
+- **PostgreSQL** - Banco de dados relacional
+- **Springdoc OpenAPI 2.6.0** - Documentação Swagger
+- **Google GenAI 1.3.0** - Integração com IA
+- **Jackson** - Serialização/Deserialização JSON
+- **Maven** - Gerenciamento de dependências
 
 ## 📦 Pré-requisitos
 
 Antes de começar, certifique-se de ter instalado:
 
-- Java JDK 21 ou superior
-- Maven 3.6+
-- PostgreSQL 12+
-- Git (opcional)
+- ☕ Java JDK 21 ou superior
+- 📦 Maven 3.6+
+- 🐘 PostgreSQL 12+
+- 🔧 Git (opcional)
 
 ## 🚀 Instalação
 
@@ -47,38 +64,62 @@ cd VEND
 ./mvnw clean install
 ```
 
+Ou no Windows:
+
+```bash
+mvnw.cmd clean install
+```
+
 ## ⚙️ Configuração
 
-### Banco de Dados
+### Banco de Dados PostgreSQL
 
-Crie um banco de dados PostgreSQL:
+1. Crie um banco de dados PostgreSQL:
 
 ```sql
 CREATE DATABASE vend_db;
 ```
 
-### Variáveis de Ambiente
+2. Configure as credenciais de acesso através de variáveis de ambiente:
 
-Configure as seguintes variáveis de ambiente:
-
+**Linux/Mac:**
 ```bash
-# Linux/Mac
 export DB_HOST=localhost:5432
 export DB_USER=seu_usuario
 export DB_PASSWORD=sua_senha
+```
 
-# Windows (CMD)
+**Windows (CMD):**
+```cmd
 set DB_HOST=localhost:5432
 set DB_USER=seu_usuario
 set DB_PASSWORD=sua_senha
+```
 
-# Windows (PowerShell)
+**Windows (PowerShell):**
+```powershell
 $env:DB_HOST="localhost:5432"
 $env:DB_USER="seu_usuario"
 $env:DB_PASSWORD="sua_senha"
 ```
 
-Ou edite o arquivo `src/main/resources/application.properties` diretamente.
+### Configurações da Aplicação
+
+As configurações podem ser ajustadas no arquivo `src/main/resources/application.properties`:
+
+```properties
+# Database
+spring.datasource.url=jdbc:postgresql://${DB_HOST}/vend_db
+spring.datasource.username=${DB_USER}
+spring.datasource.password=${DB_PASSWORD}
+
+# JPA
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+
+# Swagger
+springdoc.swagger-ui.path=/swagger-ui.html
+```
 
 ## ▶️ Executando a Aplicação
 
@@ -88,48 +129,50 @@ Ou edite o arquivo `src/main/resources/application.properties` diretamente.
 ./mvnw spring-boot:run
 ```
 
-### Gerando o JAR
+### Gerando e Executando o JAR
 
 ```bash
 ./mvnw clean package
 java -jar target/VEND-0.0.1-SNAPSHOT.jar
 ```
 
-A aplicação estará disponível em: `http://localhost:8080`
+A aplicação estará disponível em: **http://localhost:8080**
 
 ## 📚 Documentação da API
 
-Após iniciar a aplicação, acesse a documentação interativa do Swagger:
+Após iniciar a aplicação, acesse:
 
-### Swagger UI (Interface Gráfica)
+### 📊 Swagger UI (Interface Interativa)
 ```
 http://localhost:8080/swagger-ui.html
 ```
 
-### OpenAPI JSON
+### 📄 OpenAPI JSON
 ```
 http://localhost:8080/api-docs
 ```
 
 ## 🔗 Endpoints
 
-### Carros
+### 🚗 Carros
 
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| GET | `/carros` | Lista todos os carros |
-| GET | `/carros/{id}` | Busca carro por ID |
-| GET | `/carros/marca/{marca}` | Busca carros por marca |
-| GET | `/carros/marca/{marca}/modelo/{modelo}` | Busca por marca e modelo |
-| DELETE | `/carros/{id}` | Deleta um carro |
+| `POST` | `/carros` | Cadastra um novo carro |
+| `GET` | `/carros` | Lista todos os carros (ordenados por preço) |
+| `GET` | `/carros/{id}` | Busca carro por ID |
+| `GET` | `/carros/marca/{marca}` | Busca carros por marca |
+| `GET` | `/carros/marca/{marca}/modelo/{modelo}` | Busca por marca e modelo |
+| `DELETE` | `/carros/{id}` | Remove um carro |
 
-### Usuários Administradores
+### 👥 Usuários Administradores
 
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| GET | `/usuarios` | Lista todos os usuários |
-| GET | `/usuarios/{id}` | Busca usuário por ID |
-| DELETE | `/usuarios/{id}` | Deleta um usuário |
+| `POST` | `/usuarios` | Cadastra um novo usuário admin |
+| `GET` | `/usuarios` | Lista todos os usuários |
+| `GET` | `/usuarios/{id}` | Busca usuário por ID |
+| `DELETE` | `/usuarios/{id}` | Remove um usuário |
 
 ## 📂 Estrutura do Projeto
 
@@ -137,54 +180,130 @@ http://localhost:8080/api-docs
 VEND/
 ├── src/
 │   ├── main/
-│   │   ├── java/
-│   │   │   └── com/example/VEND/
-│   │   │       ├── config/          # Configurações
-│   │   │       │   └── OpenApiConfig.java
-│   │   │       ├── controller/      # Controllers REST
-│   │   │       │   ├── CarroController.java
-│   │   │       │   └── UsuarioAdmController.java
-│   │   │       ├── dto/             # Data Transfer Objects
-│   │   │       │   ├── CarroDTO.java
-│   │   │       │   └── UsuarioAdmDTO.java
-│   │   │       ├── model/           # Entidades JPA
-│   │   │       │   ├── Carro.java
-│   │   │       │   ├── Carroceria.java
-│   │   │       │   ├── UsuarioAdm.java
-│   │   │       │   └── UsuarioCliente.java
-│   │   │       ├── repository/      # Repositórios JPA
-│   │   │       │   ├── RepositorioCarro.java
-│   │   │       │   └── RepositorioUsuarioAdm.java
-│   │   │       ├── service/         # Lógica de negócio
-│   │   │       │   ├── CarroService.java
-│   │   │       │   ├── UsuarioAdmService.java
-│   │   │       │   ├── ConsumoAPi.java
-│   │   │       │   └── ConverteJson.java
-│   │   │       └── VendApplication.java
+│   │   ├── java/com/example/VEND/
+│   │   │   ├── config/
+│   │   │   │   ├── CorsConfig.java           # Configuração CORS
+│   │   │   │   └── OpenApiConfig.java        # Configuração Swagger
+│   │   │   ├── controller/
+│   │   │   │   ├── CarroController.java      # Endpoints de carros
+│   │   │   │   └── UsuarioAdmController.java # Endpoints de usuários
+│   │   │   ├── dto/
+│   │   │   │   ├── CarroCadastrarDTO.java    # DTO para cadastro
+│   │   │   │   ├── CarroResponseDTO.java     # DTO de resposta
+│   │   │   │   ├── UsuarioCadastrarDTO.java  # DTO cadastro usuário
+│   │   │   │   └── UsuarioAdmResponseDTO.java
+│   │   │   ├── model/
+│   │   │   │   ├── Carro.java                # Entidade Carro
+│   │   │   │   ├── UsuarioAdm.java           # Entidade Admin
+│   │   │   │   ├── UsuarioCliente.java       # Entidade Cliente
+│   │   │   │   ├── DadosFipe.java            # Modelo API FIPE
+│   │   │   │   ├── DadosMarca.java
+│   │   │   │   ├── DadosLista.java
+│   │   │   │   ├── DadosAnos.java
+│   │   │   │   └── enums/
+│   │   │   │       └── Carroceria.java       # Enum tipos carroceria
+│   │   │   ├── repository/
+│   │   │   │   ├── RepositorioCarro.java
+│   │   │   │   └── RepositorioUsuarioAdm.java
+│   │   │   ├── service/
+│   │   │   │   ├── CarroService.java         # Lógica de negócio
+│   │   │   │   ├── UsuarioAdmService.java
+│   │   │   │   ├── ConsumoAPi.java           # Consumo API FIPE
+│   │   │   │   └── ConverteJson.java         # Conversão JSON
+│   │   │   └── VendApplication.java          # Classe principal
 │   │   └── resources/
 │   │       └── application.properties
 │   └── test/
 └── pom.xml
 ```
 
+## 📊 Modelos de Dados
+
+### Carro
+
+```json
+{
+  "id": 1,
+  "modelo": "Uno",
+  "marca": "fiat",
+  "ano": 2023,
+  "carroceria": "HATCH",
+  "preco": 45000.00,
+  "imagem": "byte[]",
+  "usuarioCliente": null
+}
+```
+
+**Tipos de Carroceria:**
+- `SEDAN`
+- `HATCH`
+- `SUV`
+- `CAMINHONETE`
+- `PERUA`
+- `SELECIONE`
+
+### Usuário Administrador
+
+```json
+{
+  "id": 1,
+  "email": "admin@vend.com.br",
+  "senha": "senha123"
+}
+```
+
+### Cadastro de Carro
+
+```json
+{
+  "carroceria": "hatch",
+  "imagem": [byte array],
+  "modelo": "uno",
+  "ano": 2023,
+  "preco": 45000.00,
+  "marca": "fiat"
+}
+```
+
 ## 🔍 Exemplos de Uso
+
+### Cadastrar um carro
+
+```bash
+curl -X POST "http://localhost:8080/carros" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "carroceria": "hatch",
+    "imagem": [],
+    "modelo": "uno",
+    "ano": 2023,
+    "preco": 45000.00,
+    "marca": "fiat"
+  }'
+```
 
 ### Listar todos os carros
 
 ```bash
-curl -X GET "http://localhost:8080/carros" -H "accept: application/json"
+curl -X GET "http://localhost:8080/carros"
 ```
 
 ### Buscar carro por ID
 
 ```bash
-curl -X GET "http://localhost:8080/carros/1" -H "accept: application/json"
+curl -X GET "http://localhost:8080/carros/1"
 ```
 
 ### Buscar carros por marca
 
 ```bash
-curl -X GET "http://localhost:8080/carros/marca/fiat" -H "accept: application/json"
+curl -X GET "http://localhost:8080/carros/marca/fiat"
+```
+
+### Buscar carros por marca e modelo
+
+```bash
+curl -X GET "http://localhost:8080/carros/marca/fiat/modelo/uno"
 ```
 
 ### Deletar um carro
@@ -193,25 +312,47 @@ curl -X GET "http://localhost:8080/carros/marca/fiat" -H "accept: application/js
 curl -X DELETE "http://localhost:8080/carros/1"
 ```
 
-## 📊 Modelos de Dados
+### Cadastrar usuário administrador
 
-### CarroDTO
-
-```json
-{
-  "id": 1,
-  "modelo": "Uno",
-  "marca": "Fiat",
-  "ano": 2023,
-  "carroceria": "HATCH",
-  "preco": 45000.00,
-  "usuarioClienteId": null
-}
+```bash
+curl -X POST "http://localhost:8080/usuarios" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@vend.com.br",
+    "senha": "senha123"
+  }'
 ```
 
-### UsuarioAdmDTO
+## 🔐 Recursos de Segurança
 
-```json
-{
-  "id": 1,
-  "email": "admin@vend.com.br",
+- Configuração CORS para integração com frontends
+- Validação de dados com Bean Validation
+- Senhas armazenadas (⚠️ recomenda-se implementar criptografia em produção)
+
+## 🚧 Melhorias Futuras
+
+- [ ] Implementar autenticação JWT
+- [ ] Adicionar criptografia de senhas (BCrypt)
+- [ ] Sistema de upload de imagens
+- [ ] Paginação nos endpoints de listagem
+- [ ] Filtros avançados de busca
+- [ ] Cache de consultas frequentes
+- [ ] Testes unitários e de integração
+- [ ] Deploy com Docker
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT.
+
+## 👥 Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
+
+## 📞 Contato
+
+- **Email:** bekist2006@gmail.com
+- **GitHub:** [BKSrn/VEND](https://github.com/BKSrn)
+
+---
+
+Desenvolvido com ☕ pela equipe VEND
