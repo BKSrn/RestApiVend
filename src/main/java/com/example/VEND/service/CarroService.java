@@ -18,12 +18,12 @@ public class CarroService {
     private RepositorioCarro repositorioCarro;
 
     private CarroResponseDTO converteToDTO(Carro carro) {
-        return new CarroResponseDTO(carro.getId(), carro.getModelo(), carro.getMarca(), carro.getAno(), carro.getCarroceria(), carro.getPreco(), carro.getUsuarioCliente());
+        return new CarroResponseDTO(carro.getId(), carro.getModelo(), carro.getMarca(), carro.getAno(), carro.getCarroceria(), carro.getPreco(), carro.getImagem(), carro.getUsuarioCliente());
     }
 
     private List<CarroResponseDTO> converteToDTOList(List<Carro> carros) {
         return carros.stream()
-                .map(c -> new CarroResponseDTO(c.getId(), c.getModelo(), c.getMarca(), c.getAno(), c.getCarroceria(), c.getPreco(), c.getUsuarioCliente()))
+                .map(c -> new CarroResponseDTO(c.getId(), c.getModelo(), c.getMarca(), c.getAno(), c.getCarroceria(), c.getPreco(), c.getImagem(),  c.getUsuarioCliente()))
                 .collect(Collectors.toList());
     }
 

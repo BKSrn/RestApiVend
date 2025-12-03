@@ -25,6 +25,9 @@ public record CarroResponseDTO(
         @Schema(description = "Preço do carro em reais", example = "45000.00")
         Double preco,
 
+        @Schema(description = "Imagem do carro")
+        byte[] imagem,
+
         @Schema(description = "Cliente interessado no carro")
         UsuarioCliente usuarioClienteId
 ) {
