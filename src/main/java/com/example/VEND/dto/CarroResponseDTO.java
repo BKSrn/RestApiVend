@@ -2,7 +2,6 @@
 package com.example.VEND.dto;
 
 import com.example.VEND.model.enums.Carroceria;
-import com.example.VEND.model.UsuarioCliente;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Objeto de transferência de dados para informações de carros")
@@ -26,9 +25,5 @@ public record CarroResponseDTO(
         Double preco,
 
         @Schema(description = "Imagem do carro")
-        byte[] imagem,
-
-        @Schema(description = "Cliente interessado no carro")
-        UsuarioCliente usuarioClienteId
-) {
+        byte[] imagem) {
 }
