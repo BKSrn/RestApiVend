@@ -5,7 +5,6 @@ import com.example.VEND.dto.UsuarioCadastrarDTO;
 import com.example.VEND.model.UsuarioAdm;
 import com.example.VEND.repository.RepositorioUsuarioAdm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +16,6 @@ public class UsuarioAdmService {
 
     @Autowired
     private RepositorioUsuarioAdm repositorioUsuarioAdm;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     public String deletarUsuario(Long id) {
         if (repositorioUsuarioAdm.existsById(id)){
@@ -44,9 +41,6 @@ public class UsuarioAdmService {
     public void cadastrarUsuario(UsuarioCadastrarDTO dto) {
         if (dto != null){
             UsuarioAdm usuarioAdm = new UsuarioAdm(dto);
-            //criptografa a senha
-            String senhaCriptografia = passwordEncoder.encode(usuarioAdm.getSenha());
-            usuarioAdm.setSenha(senhaCriptografia);
             repositorioUsuarioAdm.save(usuarioAdm);
         }else {
             throw new RuntimeException("Informe todas as informações corretamentes");
