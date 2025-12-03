@@ -57,5 +57,4 @@ public class UsuarioAdmService {
                 .collect(Collectors.toList());
     }
 
-
 }
