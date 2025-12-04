@@ -22,7 +22,7 @@ public class UsuarioClienteService {
         }
         UsuarioCliente usuarioSalvo = repositorioUsuarioCliente.save(new UsuarioCliente(dto));
 
-        return new UsuarioClienteResponseDTO(dto.email(), dto.senha());
+        return new UsuarioClienteResponseDTO(usuarioSalvo.getEmail(), usuarioSalvo.getSenha());
     }
 
     public UsuarioClienteResponseDTO login(UsuarioClienteLoginDTO dto) {

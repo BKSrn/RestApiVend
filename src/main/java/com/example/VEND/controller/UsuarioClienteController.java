@@ -17,13 +17,13 @@ public class UsuarioClienteController {
     private UsuarioClienteService usuarioClienteService;
 
     @PostMapping
-    public ResponseEntity<UsuarioClienteResponseDTO> cadastrar(@RequestBody UsuarioClienteCadastrarDTO dto){
+    public ResponseEntity<String> cadastrar(@RequestBody UsuarioClienteCadastrarDTO dto){
         try {
             UsuarioClienteResponseDTO usuarioCliente = usuarioClienteService.cadastrar(dto);
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioCliente);
+            return ResponseEntity.status(HttpStatus.OK).body("Cadastro do email: " + usuarioCliente.email() + "realizado");
 
         }catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
 
     }
