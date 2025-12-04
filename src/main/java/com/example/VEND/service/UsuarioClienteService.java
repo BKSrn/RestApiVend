@@ -6,7 +6,9 @@ import com.example.VEND.dto.UsuarioClienteResponseDTO;
 import com.example.VEND.model.UsuarioCliente;
 import com.example.VEND.repository.RepositorioUsuarioCliente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UsuarioClienteService {
 
     @Autowired
