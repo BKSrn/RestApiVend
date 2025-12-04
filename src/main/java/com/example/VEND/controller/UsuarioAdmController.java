@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/usuariosAdm")
 @Tag(name = "Usuários Administradores", description = "Endpoints para gerenciamento de usuários administradores do sistema")
 public class UsuarioAdmController {
 
