@@ -1,5 +1,6 @@
 package com.example.VEND.model;
 
+import com.example.VEND.dto.UsuarioClienteCadastrarDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,16 +19,39 @@ public class UsuarioCliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @OneToMany(mappedBy = "usuarioCliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Carro> listaInteressesCar = new ArrayList<>();
 
     private String email;
+    private String senha;
 
     public UsuarioCliente() {
     }
 
     public UsuarioCliente(String email) {
         this.email = email;
+    }
+
+    public UsuarioCliente(UsuarioClienteCadastrarDTO dto) {
+        this.email = dto.email();
+        this.senha = dto.senha();
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public long getId() {
