@@ -16,7 +16,7 @@ public class UsuarioClienteController {
     @Autowired
     private UsuarioClienteService usuarioClienteService;
 
-    @PostMapping
+    @PostMapping("/cadastro")
     public ResponseEntity<String> cadastrar(@RequestBody UsuarioClienteCadastrarDTO dto){
         try {
             UsuarioClienteResponseDTO usuarioCliente = usuarioClienteService.cadastrar(dto);
@@ -28,16 +28,15 @@ public class UsuarioClienteController {
 
     }
 
-    @GetMapping
-    public ResponseEntity<UsuarioClienteResponseDTO> login(@RequestBody UsuarioClienteLoginDTO dto){
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioClienteResponseDTO> login(@RequestBody UsuarioClienteLoginDTO dto) {
         try {
             UsuarioClienteResponseDTO usuarioCliente = usuarioClienteService.login(dto);
             return ResponseEntity.status(HttpStatus.OK).body(usuarioCliente);
 
-        }catch (Exception e ){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
     }
 
 }
