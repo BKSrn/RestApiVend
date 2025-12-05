@@ -8,6 +8,9 @@ import com.example.VEND.repository.RepositorioUsuarioCliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UsuarioClienteService {
 
@@ -28,5 +31,17 @@ public class UsuarioClienteService {
     public UsuarioClienteResponseDTO login(UsuarioClienteLoginDTO dto) {
         UsuarioCliente usuario = repositorioUsuarioCliente.findByEmailAndSenha(dto.email(), dto.senha());
         return new UsuarioClienteResponseDTO(usuario.getEmail(), usuario.getSenha());
+    }
+
+    public List<UsuarioClienteResponseDTO> buscarClientes() {
+        List<UsuarioCliente> usuarios = repositorioUsuarioCliente.findAll();
+
+        if (!usuarios.isEmpty()){
+            return usuarios.stream()
+                    .map(u -> new UsuarioClienteResponseDTO(u.getEmail(), u.getSenha()))
+                    .collect(Collectors.toList());
+        }
+
+        throw new RuntimeException("Nenhum usuario cliente cadastrado no banco de dados");
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/usuariosCliente")
 public class UsuarioClienteController {
@@ -37,6 +39,17 @@ public class UsuarioClienteController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UsuarioClienteResponseDTO>> listarClientes(){
+        try {
+            List<UsuarioClienteResponseDTO> usuariosResponse = usuarioClienteService.buscarClientes();
+            return ResponseEntity.status(HttpStatus.OK).body(usuariosResponse);
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
 
 }
